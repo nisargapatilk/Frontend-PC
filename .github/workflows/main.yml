@@ -3,18 +3,18 @@ name: Angular CI/CD
 on:
   push:
     branches:
-      - main
+      - main  # triggers workflow on push to main branch
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest   # 👉 Ubuntu is faster & recommended
+    runs-on: ubuntu-latest
 
     steps:
       # 1. Checkout repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Setup Node.js (Angular 20 requires Node 18+)
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -22,9 +22,9 @@ jobs:
 
       # 3. Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # 4. Build Angular app (production mode)
+      # 4. Build Angular app (production)
       - name: Build Angular
         run: npm run build -- --configuration production
 
@@ -33,4 +33,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/product-catalog-web   # 👉 your Angular app's build folder
+          publish_dir: ./dist/pc-web   # Update this if your dist folder name is different
